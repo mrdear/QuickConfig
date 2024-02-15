@@ -83,3 +83,6 @@ testem.log
 
 # System files
 Thumbs.db
+
+# static
+META-INF
