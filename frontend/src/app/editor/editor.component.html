@@ -1,0 +1,13 @@
+<nz-layout class="layout-container">
+  <nz-row>
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" [(ngModel)]="path" nz-input placeholder="input file absolute path (start with /)"/>
+    </nz-input-group>
+  </nz-row>
+
+  <nz-code-editor class="editor" [ngModel]="content" [nzEditorOption]="getEditorConf()"></nz-code-editor>
+</nz-layout>
+
+<ng-template #suffixIconButton>
+  <button nz-button nzType="primary" (click)="getFile()" nzSearch><span nz-icon nzType="search"></span></button>
+</ng-template>
