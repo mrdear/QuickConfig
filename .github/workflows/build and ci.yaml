@@ -11,8 +11,10 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-Angular:
+  build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE_NAME: quding/quickconfig
     strategy:
       matrix:
         node-version: [ 18.17.1 ]
@@ -49,7 +51,7 @@ jobs:
 
       - name: Set Release version env variable
         working-directory: backend
-        run: echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_ENV"
 
       - name: Build with Maven
         working-directory: backend
