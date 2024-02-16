@@ -1,41 +1,38 @@
 package cn.mrdear.config.model;
 
+import lombok.Data;
+
 /**
  * @author quding
  * @since 2024/2/15
  */
+@Data
 public class FileInfo {
 
+    /**
+     * 文件路径
+     */
     private String path;
+    /**
+     * 文件名
+     */
+    private String name;
 
-    private String content;
+    /**
+     * 是否为目录
+     */
+    private Boolean isDir;
+    /**
+     * 是否为文本文件
+     */
+    private Boolean isText;
+    /**
+     * 是否有子项
+     */
+    private Boolean hasChildren;
+    /**
+     * file命令的详细信息
+     */
+    private String info;
 
-    private String md5;
-
-    public String getPath() {
-        return path;
-    }
-
-    public FileInfo setPath(String path) {
-        this.path = path;
-        return this;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public FileInfo setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    public String getMd5() {
-        return md5;
-    }
-
-    public FileInfo setMd5(String md5) {
-        this.md5 = md5;
-        return this;
-    }
 }

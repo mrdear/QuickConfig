@@ -1,13 +1,34 @@
-<nz-layout class="layout-container">
-  <nz-row>
-    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-      <input type="text" [(ngModel)]="path" nz-input placeholder="input file absolute path (start with /)"/>
-    </nz-input-group>
-  </nz-row>
+@if (node) {
+  <nz-layout class="layout-container">
+    <nz-row class="description">
+      <nz-descriptions nzSize="small" [nzColumn]="1" [nzTitle]="node.title" nzBordered>
+        <nz-descriptions-item nzTitle="文件路径">{{ node.key }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="文件详情">{{ (info || node.info)?.replace(node.key + ": ", "") }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="文件MD5">{{ md5 }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="操作">
+          <nz-row class="btn-opt">
+            <button nz-button nzType="primary" (click)="getFile()" [disabled]="isLoading || !node.isText">
+              Reload
+            </button>
+            <button nz-button nzType="primary" (click)="saveFile()" [disabled]="isLoading || !node.isText">
+              Save
+            </button>
+          </nz-row>
+        </nz-descriptions-item>
+      </nz-descriptions>
+    </nz-row>
 
-  <nz-code-editor class="editor" [ngModel]="content" [nzEditorOption]="getEditorConf()"></nz-code-editor>
-</nz-layout>
+    <nz-divider></nz-divider>
 
-<ng-template #suffixIconButton>
-  <button nz-button nzType="primary" (click)="getFile()" nzSearch><span nz-icon nzType="search"></span></button>
-</ng-template>
+    @if (!isLoading) {
+      <nz-code-editor *ngIf="node.isText" class="editor" [(ngModel)]="content"
+                      [nzEditorOption]="getEditorConf(node)"></nz-code-editor>
+    }
+  </nz-layout>
+} @else {
+  <nz-layout class="layout-container">
+    <h2 style="margin: 20%">请选择左侧文件</h2>
+  </nz-layout>
+}
+

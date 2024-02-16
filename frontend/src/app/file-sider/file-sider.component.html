@@ -1,0 +1,20 @@
+<nz-sider>
+  <div class="logo"></div>
+
+  <nz-tree [nzData]="nodes" nzAsyncData nzShowIcon [nzTreeTemplate]="nzTreeTemplate"
+           (nzClick)="clickNode($event)" (nzExpandChange)="expandNode($event)">
+  </nz-tree>
+
+</nz-sider>
+
+<ng-template #nzTreeTemplate let-node let-origin="origin">
+      <span class="custom-node">
+        @if (!origin.isDir) {
+          <span nz-icon nzType="file"></span>
+          <span class="file-name">{{ node.title }}</span>
+        } @else {
+          <span nz-icon [nzType]="origin.expanded ? 'folder-open' : 'folder'"></span>
+          <span class="file-name">{{ node.title }}</span>
+        }
+      </span>
+</ng-template>
