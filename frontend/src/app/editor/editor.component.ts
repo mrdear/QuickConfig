@@ -8,6 +8,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {FileService} from "../service/file.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {languages} from "monaco-editor";
 import {TreeService} from "../service/tree.service";
 import {NzDescriptionsComponent, NzDescriptionsItemComponent} from "ng-zorro-antd/descriptions";
 import {NgIf} from "@angular/common";
@@ -47,18 +48,6 @@ export class EditorComponent implements OnInit {
 
   info: string = '';
 
-  private fileTypeToMonacoLanguageMap: Map<string, string> = new Map([
-    ['js', 'javascript'],
-    ['ts', 'typescript'],
-    ['jsx', 'typescript'],
-    ['groovy', 'java'],
-    ['md', 'markdown'],
-    ['py', 'python'],
-    ['rb', 'ruby'],
-    ['sh', 'shell'],
-    ['kt', 'kotlin'],
-  ]);
-
   constructor(protected fileService: FileService,
               protected treeService: TreeService,
               protected message: NzMessageService) {
@@ -74,19 +63,19 @@ export class EditorComponent implements OnInit {
 
 
   getEditorConf(node: any): any {
-    let suffix: string = 'ini';
+    let title = node.title.toLowerCase();
 
-    let title = node.title;
-    let lastIndexOf = title.lastIndexOf('.');
-    if (lastIndexOf > 0) {
-      suffix = title.substring(lastIndexOf + 1).toLowerCase();
-      if (this.fileTypeToMonacoLanguageMap.has(suffix)) {
-        suffix = this.fileTypeToMonacoLanguageMap.get(suffix);
+    let extensionPoints = languages.getLanguages();
+    let suffix = extensionPoints.find(x => {
+      let find = x.extensions?.find(y => title.endsWith(y));
+      if (find) {
+        return x;
       }
-    }
+      return null;
+    });
 
     return {
-      language: suffix,
+      language: suffix?.id || 'ini',
       autoIndent: 'None', // 控制编辑器在用户键入、粘贴、移动或缩进行时是否应自动调整缩进
       cursorBlinking: 'Solid', // 光标动画样式
       minimap: {
@@ -101,6 +90,7 @@ export class EditorComponent implements OnInit {
   getFile() {
     this.content = '';
     this.md5 = '';
+    this.info = '';
 
     if (!this.node.isText) {
       return;
