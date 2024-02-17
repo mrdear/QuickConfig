@@ -8,12 +8,12 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {FileService} from "../service/file.service";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {languages} from "monaco-editor";
 import {TreeService} from "../service/tree.service";
 import {NzDescriptionsComponent, NzDescriptionsItemComponent} from "ng-zorro-antd/descriptions";
 import {NgIf} from "@angular/common";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {LANGUAGE_MAP} from "../model/language-constant";
 
 @Component({
   selector: 'app-editor',
@@ -65,9 +65,8 @@ export class EditorComponent implements OnInit {
   getEditorConf(node: any): any {
     let title = node.title.toLowerCase();
 
-    let extensionPoints = languages.getLanguages();
-    let suffix = extensionPoints.find(x => {
-      let find = x.extensions?.find(y => title.endsWith(y));
+    let suffix = Object.keys(LANGUAGE_MAP).find(x => {
+      let find = LANGUAGE_MAP[x].find(y => title.endsWith(y));
       if (find) {
         return x;
       }
@@ -75,7 +74,7 @@ export class EditorComponent implements OnInit {
     });
 
     return {
-      language: suffix?.id || 'ini',
+      language: suffix || 'ini',
       autoIndent: 'None', // 控制编辑器在用户键入、粘贴、移动或缩进行时是否应自动调整缩进
       cursorBlinking: 'Solid', // 光标动画样式
       minimap: {
