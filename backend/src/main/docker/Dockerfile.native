@@ -19,6 +19,9 @@ WORKDIR /work/
 RUN chown 1001 /work \
     && chmod "g+rwX" /work \
     && chown 1001:root /work
+
+# 安装依赖软件
+RUN microdnf install -y microdnf file
 COPY --chown=1001:root target/*-runner /work/application
 
 # copy config
